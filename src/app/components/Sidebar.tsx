@@ -7,7 +7,7 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <div
-      className={`bg-gray-900 text-white p-4 transition-all duration-300 ${
+      className={`bg-[#181818] text-white p-4 transition-all duration-300 ${
         collapsed ? 'w-16' : 'w-64'
       } hidden md:flex flex-col`}
     >

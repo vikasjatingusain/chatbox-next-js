@@ -10,7 +10,6 @@ export default function NewChat({ chatId }: { chatId: string }) {
   );
   const [input, setInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [done, setDone] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -37,14 +36,10 @@ export default function NewChat({ chatId }: { chatId: string }) {
     let assistantMessage = "";
     setMessages((current) => [...current, { role: "assistant", content: "" }]);
     setIsGenerating(false);
-    setDone(false);
 
     while (reader) {
       const { done, value } = await reader.read();
-      if (done) {
-        setDone(true);
-        break;
-      }
+      if (done) break;
 
       const chunk = decoder.decode(value);
       const lines = chunk
@@ -68,7 +63,7 @@ export default function NewChat({ chatId }: { chatId: string }) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full px-4 py-2 overflow-y-auto bg-gray-800">
+    <div className="flex flex-col h-full w-full px-4 py-2 overflow-y-auto bg-[#212121]">
       <div className="flex flex-col flex-1 mb-4 overflow-y-auto px-10">
         {messages.map((msg, i) => (
           <Chat key={i} role={msg.role} content={msg.content} />
@@ -80,7 +75,7 @@ export default function NewChat({ chatId }: { chatId: string }) {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center w-1/2 m-auto my-3 rounded-2xl bg-gray-600 gap-2 px-4 py-4 justify-center"
+        className="flex items-center w-1/2 m-auto my-3 rounded-2xl bg-[#303030] gap-2 px-4 py-4 justify-center"
       >
         <input
           className="w-full border outline-none border-none rounded-lg bg-transparent text-gray-white"
@@ -90,8 +85,8 @@ export default function NewChat({ chatId }: { chatId: string }) {
         />
         <button
           type="submit"
-          className="bg-white text-black px-4 py-4 rounded-full disabled:bg-gray-500"
-          disabled={!input && !done}
+          className="bg-white text-black px-4 py-4 rounded-full disabled:bg-black/50 disabled:text-white/20"
+          disabled={!input}
         >
           <FaArrowUp />
         </button>
